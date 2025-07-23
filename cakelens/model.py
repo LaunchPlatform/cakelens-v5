@@ -350,14 +350,8 @@ class Model(nn.Module):
     def __init__(
         self,
         initial_channels: int = 64,
-        space_block_count: int = 3,
-        space_block_depth: int = 2,
-        time_block_count: int = 3,
-        time_block_depth: int = 2,
         spacetime_block_count: int = 6,
         spacetime_block_depth: int = 1,
-        full_kernel_block_count: int = 6,
-        full_kernel_block_depth: int = 2,
         channels_step: int = 32,
         checkpoint: bool = False,
         non_linear_op: typing.Type[nn.Module] = nn.LeakyReLU,
@@ -366,14 +360,8 @@ class Model(nn.Module):
     ):
         super().__init__()
         self.initial_channels = initial_channels
-        self.space_block_count = space_block_count
-        self.space_block_depth = space_block_depth
-        self.time_block_count = time_block_count
-        self.time_block_depth = time_block_depth
         self.spacetime_block_count = spacetime_block_count
         self.spacetime_block_depth = spacetime_block_depth
-        self.full_kernel_block_count = full_kernel_block_count
-        self.full_kernel_block_depth = full_kernel_block_depth
         self.channels_step = channels_step
         self.checkpoint = checkpoint
         self.non_linear_op = non_linear_op
@@ -429,7 +417,6 @@ class Model(nn.Module):
         return make_repr_attrs(
             [
                 ("initial_channels", self.initial_channels),
-                ("spacetime_mode", self.spacetime_mode),
                 ("channels_step", self.channels_step),
                 ("non_linear_op", self.non_linear_op),
                 ("norm_op", self.norm_op),
