@@ -1,3 +1,4 @@
+import dataclasses
 import enum
 
 
@@ -21,3 +22,9 @@ class Label(enum.Enum):
     PIKA = "PIKA"
     HUNYUAN = "HUNYUAN"
     VIDU = "VIDU"
+
+
+@dataclasses.dataclass(frozen=True)
+class Frameset:
+    video_filename: str
+    index: int
