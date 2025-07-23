@@ -13,3 +13,5 @@ NORMALIZATION_STD = [
     0.2775335907936096,
     0.27996501326560974,
 ]  # Std values for R, G, B channels
+HUGGINGFACE_HUB_REPO_ID = "fangpenlin/cakelens-v5"
+HUGGINGFACE_HUB_REPO_FILENAME = "cakelens-model-5.0.pth"

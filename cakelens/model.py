@@ -427,6 +427,20 @@ class Model(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.seq(x)
 
+    def load_from_huggingface_hub(self):
+        try:
+            from huggingface_hub import hf_hub_download
+        except ImportError:
+            logger.error(
+                "You need to install huggingface-hub in order to load the model from huggingface-hub"
+            )
+            raise RuntimeError()
+        model_path = hf_hub_download(
+            repo_id=constants.HUGGINGFACE_HUB_REPO_ID,
+            filename=constants.HUGGINGFACE_HUB_REPO_FILENAME,
+        )
+        self.load_state_dict(torch.load(model_path))
+
 
 def make_transformer() -> typing.Callable:
     return transforms.Compose(
