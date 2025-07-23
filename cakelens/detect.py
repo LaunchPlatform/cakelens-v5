@@ -38,7 +38,7 @@ class Detector:
         self.batch_size = batch_size
         self.num_workers = num_workers
         if self.num_workers is None:
-            self.num_workers = os.cpu_count()
+            self.num_workers = max(os.cpu_count() // 2, 1)
         self.device = device
         if self.device is None:
             self.device = detect_device()
@@ -56,6 +56,7 @@ class Detector:
                 range(0, decoder.metadata.num_frames, constants.FRAMESET_COUNT)
             )
         ]
+        total_frame_count = decoder.metadata.num_frames
 
         transform = make_transformer()
         dataset = VideoDataset(
@@ -77,13 +78,14 @@ class Detector:
             dataset,
             batch_size=self.batch_size,
             num_workers=self.num_workers,
-            pin_memory=True,
+            pin_memory=self.device.lower().startswith("cuda"),
             pin_memory_device=self.device,
         )
 
         pred_rows = []
         count = 0
         for x in dataloader:
+            x = x.to(self.device)
             logits = self.model(x)
             preds = logits.sigmoid()
             pred_rows.append(preds)
@@ -104,6 +106,6 @@ class Detector:
         logger.info("Done")
         return Verdict(
             video_filepath=video_filepath,
-            frame_count=decoder.metadata.num_frames,
+            frame_count=total_frame_count,
             predictions=pred_mean.tolist(),
         )

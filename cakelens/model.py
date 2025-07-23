@@ -439,7 +439,8 @@ class Model(nn.Module):
             repo_id=constants.HUGGINGFACE_HUB_REPO_ID,
             filename=constants.HUGGINGFACE_HUB_REPO_FILENAME,
         )
-        self.load_state_dict(torch.load(model_path))
+        # TODO: flatten the model_state_dict in huggingface hub to make it much eaiser?
+        self.load_state_dict(torch.load(model_path)["model_state_dict"])
 
 
 def make_transformer() -> typing.Callable:
