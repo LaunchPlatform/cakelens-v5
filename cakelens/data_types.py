@@ -1,5 +1,6 @@
 import dataclasses
 import enum
+import pathlib
 
 
 @enum.unique
@@ -26,5 +27,12 @@ class Label(enum.Enum):
 
 @dataclasses.dataclass(frozen=True)
 class Frameset:
-    video_filename: str
+    video_filepath: pathlib.Path
     index: int
+
+
+@dataclasses.dataclass(frozen=True)
+class Verdict:
+    video_filepath: pathlib
+    frame_count: int
+    predictions: list[float]

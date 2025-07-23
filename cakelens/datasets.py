@@ -20,7 +20,6 @@ class VideoDataset(Dataset):
         self,
         framesets: list[Frameset],
         frame_count: int,
-        video_folder: pathlib.Path,
         frame_width: int | None = None,
         frame_height: int | None = None,
         transform=None,
@@ -35,7 +34,6 @@ class VideoDataset(Dataset):
         self.frame_count = frame_count
         self.frame_width = frame_width or constants.WINDOW_WIDTH
         self.frame_height = frame_height or constants.WINDOW_HEIGHT
-        self.video_folder = video_folder
         self.transform = transform
         self.target_transform = target_transform
         self.decoder_device = decoder_device
@@ -58,17 +56,16 @@ class VideoDataset(Dataset):
         frameset = self.framesets[idx]
         logger.debug(
             "Reading video %s's frameset %s, transfer_to_device=%s",
-            pathlib.Path(frameset.video_filename),
+            frameset.video_filepath,
             frameset.index,
             self.transfer_to_device,
         )
         decoder = None
-        video_filepath = self.video_folder / frameset.video_filename
-        with record_function("read_video", str(video_filepath)):
+        with record_function("read_video", str(frameset.video_filepath)):
             if self.cache_decoder:
-                decoder = self._get_decoder(video_filepath)
+                decoder = self._get_decoder(frameset.video_filepath)
             frameset_data = read_frames(
-                video_filepath,
+                frameset.video_filepath,
                 index=frameset.index,
                 device=self.decoder_device,
                 decoder=decoder,
