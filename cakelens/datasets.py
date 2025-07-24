@@ -24,7 +24,6 @@ class VideoDataset(Dataset):
         frame_height: int | None = None,
         transform=None,
         target_transform=None,
-        decoder_device: str = "cpu",
         transfer_to_device: str | None = None,
     ):
         self.framesets = framesets
@@ -34,7 +33,6 @@ class VideoDataset(Dataset):
         self.frame_height = frame_height or constants.WINDOW_HEIGHT
         self.transform = transform
         self.target_transform = target_transform
-        self.decoder_device = decoder_device
         self.transfer_to_device = transfer_to_device
 
     def __len__(self):
@@ -48,10 +46,8 @@ class VideoDataset(Dataset):
             self.transfer_to_device,
         )
         frameset_data = read_frames(
-            frameset.video_filepath,
-            index=frameset.index,
-            device=self.decoder_device,
             decoder=self.decoder,
+            index=frameset.index,
             frame_count=self.frame_count,
             target_width=self.frame_width,
             target_height=self.frame_height,
@@ -114,17 +110,13 @@ def crop_video(
 
 
 def read_frames(
-    video_filepath: pathlib.Path,
+    decoder: VideoDecoder,
     index: int,
     crop_pos: tuple[int, int] = (0, 0),
-    device: str = "cpu",
-    decoder: VideoDecoder | None = None,
     frame_count: int = constants.FRAMESET_COUNT,
     target_width: int = constants.WINDOW_WIDTH,
     target_height: int = constants.WINDOW_HEIGHT,
 ) -> torch.Tensor:
-    if decoder is None:
-        decoder = VideoDecoder(video_filepath, device=device)
     begin = index * frame_count
     end = min((index + 1) * frame_count, decoder.metadata.num_frames)
     frames = decoder[begin:end]
