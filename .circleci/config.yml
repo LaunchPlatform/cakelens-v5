@@ -15,6 +15,9 @@ jobs:
           name: Install uv
           command: pip install uv
       - run:
+          name: Install deps
+          command: uv sync --extra torch
+      - run:
           name: Run test
           command: uv run python -m pytest ./tests -svvvv
   build-and-publish:
