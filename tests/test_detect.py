@@ -28,7 +28,7 @@ def fixtures_folder() -> pathlib.Path:
     "video_filename, expected",
     [
         ("ai-gen00.mp4", 81.9341),
-        ("non-ai-gen00.mp4", 30.6954),
+        ("non-ai-gen00.mp4", 30.695459),
     ],
 )
 def test_detect(
