@@ -47,16 +47,15 @@ class VideoDataset(Dataset):
             frameset.index,
             self.transfer_to_device,
         )
-        with record_function("read_video", str(frameset.video_filepath)):
-            frameset_data = read_frames(
-                frameset.video_filepath,
-                index=frameset.index,
-                device=self.decoder_device,
-                decoder=self.decoder,
-                frame_count=self.frame_count,
-                target_width=self.frame_width,
-                target_height=self.frame_height,
-            )
+        frameset_data = read_frames(
+            frameset.video_filepath,
+            index=frameset.index,
+            device=self.decoder_device,
+            decoder=self.decoder,
+            frame_count=self.frame_count,
+            target_width=self.frame_width,
+            target_height=self.frame_height,
+        )
         if self.transform:
             with record_function("video_transform"):
                 frameset_data = self.transform(frameset_data)

@@ -1,3 +1,4 @@
+import logging
 import pathlib
 
 import pytest
@@ -15,7 +16,7 @@ def model() -> Model:
 
 @pytest.fixture
 def detector(model: Model) -> Detector:
-    return Detector(model)
+    return Detector(model, batch_size=2)
 
 
 @pytest.fixture
