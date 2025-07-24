@@ -1,4 +1,3 @@
-import functools
 import logging
 import pathlib
 
@@ -19,6 +18,7 @@ class VideoDataset(Dataset):
     def __init__(
         self,
         framesets: list[Frameset],
+        decoder: VideoDecoder,
         frame_count: int,
         frame_width: int | None = None,
         frame_height: int | None = None,
@@ -26,11 +26,9 @@ class VideoDataset(Dataset):
         target_transform=None,
         decoder_device: str = "cpu",
         transfer_to_device: str | None = None,
-        cache_decoder: bool = False,
-        decoder_cache_size: int = 128,
-        return_frameset: bool = False,
     ):
         self.framesets = framesets
+        self.decoder = decoder
         self.frame_count = frame_count
         self.frame_width = frame_width or constants.WINDOW_WIDTH
         self.frame_height = frame_height or constants.WINDOW_HEIGHT
@@ -38,16 +36,6 @@ class VideoDataset(Dataset):
         self.target_transform = target_transform
         self.decoder_device = decoder_device
         self.transfer_to_device = transfer_to_device
-        self.cache_decoder = cache_decoder
-        self.return_frameset = return_frameset
-        if cache_decoder:
-
-            @functools.lru_cache(decoder_cache_size)
-            def get_decoder(video_filepath: pathlib.Path) -> VideoDecoder:
-                decoder = VideoDecoder(video_filepath, device=decoder_device)
-                return decoder
-
-            self._get_decoder = get_decoder
 
     def __len__(self):
         return len(self.framesets)
@@ -55,20 +43,16 @@ class VideoDataset(Dataset):
     def __getitem__(self, idx: int) -> torch.Tensor:
         frameset = self.framesets[idx]
         logger.debug(
-            "Reading video %s's frameset %s, transfer_to_device=%s",
-            frameset.video_filepath,
+            "Reading video frameset %s, transfer_to_device=%s",
             frameset.index,
             self.transfer_to_device,
         )
-        decoder = None
         with record_function("read_video", str(frameset.video_filepath)):
-            if self.cache_decoder:
-                decoder = self._get_decoder(frameset.video_filepath)
             frameset_data = read_frames(
                 frameset.video_filepath,
                 index=frameset.index,
                 device=self.decoder_device,
-                decoder=decoder,
+                decoder=self.decoder,
                 frame_count=self.frame_count,
                 target_width=self.frame_width,
                 target_height=self.frame_height,
