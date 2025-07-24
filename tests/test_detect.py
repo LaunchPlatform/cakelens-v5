@@ -38,4 +38,4 @@ def test_detect(
 ):
     video_filepath = fixtures_folder / video_filename
     verdict = detector.detect(video_filepath=video_filepath)
-    assert pytest.approx(verdict.predictions[0], expected)
+    assert verdict.predictions[0] == pytest.approx(expected)
