@@ -76,19 +76,20 @@ class Detector:
 
         pred_rows = []
         count = 0
-        for x in dataloader:
-            x = x.to(self.device)
-            logits = self.model(x)
-            preds = logits.sigmoid()
-            pred_rows.append(preds)
-            for row in preds:
-                logger.info(
-                    "[%s] %14s: %s",
-                    count,
-                    "Predictions",
-                    format_percentage_values(row.tolist()),
-                )
-                count += 1
+        with torch.no_grad():
+            for x in dataloader:
+                x = x.to(self.device)
+                logits = self.model(x)
+                preds = logits.sigmoid()
+                pred_rows.append(preds)
+                for row in preds:
+                    logger.info(
+                        "[%s] %14s: %s",
+                        count,
+                        "Predictions",
+                        format_percentage_values(row.tolist()),
+                    )
+                    count += 1
 
         pred_mean = torch.vstack(pred_rows).mean(dim=0)
         logger.info("Mean predictions: %s", pred_mean)
