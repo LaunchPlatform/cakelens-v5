@@ -44,10 +44,7 @@ class Detector:
         logger.info("Running detection for %s", video_filepath)
         with VideoDecoder(video_filepath) as decoder:
             framesets = [
-                Frameset(
-                    video_filepath=video_filepath,
-                    index=index,
-                )
+                Frameset(index=index)
                 for index, _ in enumerate(
                     range(0, decoder.metadata.num_frames, constants.FRAMESET_COUNT)
                 )

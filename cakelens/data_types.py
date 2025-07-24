@@ -27,7 +27,6 @@ class Label(enum.Enum):
 
 @dataclasses.dataclass(frozen=True)
 class Frameset:
-    video_filepath: pathlib.Path
     index: int
 
 
