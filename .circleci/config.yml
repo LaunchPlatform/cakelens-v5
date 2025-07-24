@@ -16,7 +16,10 @@ jobs:
           command: pip install uv
       - run:
           name: Install deps
-          command: uv sync --extra torch
+          command: |
+            sudo apt-get update
+            sudo apt-get install ffmpeg libavutil-dev -y
+            uv sync --extra torch
       - run:
           name: Run test
           command: uv run python -m pytest ./tests -svvvv
