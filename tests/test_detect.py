@@ -1,16 +1,21 @@
-import logging
 import pathlib
 
 import pytest
 
+from cakelens.detect import detect_device
 from cakelens.detect import Detector
 from cakelens.model import Model
 
 
 @pytest.fixture
-def model() -> Model:
+def device() -> str:
+    return detect_device()
+
+
+@pytest.fixture
+def model(device: str) -> Model:
     model = Model()
-    model.load_from_huggingface_hub()
+    model.load_from_huggingface_hub(device=device)
     return model
 
 

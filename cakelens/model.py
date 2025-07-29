@@ -427,7 +427,7 @@ class Model(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.seq(x)
 
-    def load_from_huggingface_hub(self):
+    def load_from_huggingface_hub(self, device: str | None = None):
         try:
             from huggingface_hub import hf_hub_download
         except ImportError:
@@ -440,7 +440,7 @@ class Model(nn.Module):
             filename=constants.HUGGINGFACE_HUB_REPO_FILENAME,
         )
         # TODO: flatten the model_state_dict in huggingface hub to make it much eaiser?
-        self.load_state_dict(torch.load(model_path)["model_state_dict"])
+        self.load_state_dict(torch.load(model_path, device=device)["model_state_dict"])
 
 
 def make_transformer() -> typing.Callable:
