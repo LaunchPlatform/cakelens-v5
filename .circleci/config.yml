@@ -9,6 +9,7 @@ jobs:
   test:
     docker:
       - image: cimg/python:3.10.14
+    resource_class: xlarge
     steps:
       - checkout
       - run:
@@ -20,10 +21,10 @@ jobs:
             sudo apt-get update
             sudo apt-get install ffmpeg libavutil-dev -y
             uv sync --extra torch
-          no_output_timeout: 30m
       - run:
           name: Run test
           command: uv run python -m pytest ./tests -svvvv
+          no_output_timeout: 30m
   build-and-publish:
     docker:
       - image: cimg/python:3.10.14
