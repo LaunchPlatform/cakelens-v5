@@ -32,8 +32,8 @@ def fixtures_folder() -> pathlib.Path:
 @pytest.mark.parametrize(
     "video_filename, expected",
     [
-        ("ai-gen00.mp4", 81.9341),
-        ("non-ai-gen00.mp4", 30.695459),
+        ("ai-gen00.mp4", 81.93103671073914),
+        ("non-ai-gen00.mp4", 30.68598210811615),
     ],
 )
 def test_detect(
