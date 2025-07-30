@@ -57,3 +57,40 @@ The tool provides:
 - Final mean predictions across all frames
 - Option to save results in JSON format
 - Detailed logging (with `--verbose` flag)
+
+## Programmatic Usage
+
+You can also use the detection functionality programmatically in your Python code:
+
+### Basic Detection
+
+```python
+import pathlib
+from cakelens.detect import Detector
+from cakelens.model import Model
+
+# Create model and load from Hugging Face Hub
+model = Model()
+# load the model weights from Hugging Face Hub
+model.load_from_huggingface_hub()
+# or, if you have a local model file:
+# model.load_state_dict(torch.load("model.pt")["model_state_dict"])
+
+# Create detector
+detector = Detector(
+    model=model,
+    batch_size=1,
+    device="cpu"  # or "cuda", "mps", or None for auto-detection
+)
+
+# Run detection
+video_path = pathlib.Path("video.mp4")
+verdict = detector.detect(video_path)
+
+# Access results
+print(f"Video: {verdict.video_filepath}")
+print(f"Frame count: {verdict.frame_count}")
+print("Predictions:")
+for i, prob in enumerate(verdict.predictions):
+    print(f"  Label {i}: {prob * 100:.2f}%")
+```
