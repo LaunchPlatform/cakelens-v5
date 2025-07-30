@@ -82,9 +82,12 @@ class Detector:
                 preds = logits.sigmoid()
                 pred_rows.append(preds)
                 for row in preds:
+                    percentage = ((count + 1) / len(dataset)) * 100
                     logger.info(
-                        "[%s] %14s: %s",
-                        count,
+                        "[%d/%d | %.2f%%] %14s: %s",
+                        count + 1,
+                        len(dataset),
+                        percentage,
                         "Predictions",
                         format_percentage_values(row.tolist()),
                     )
