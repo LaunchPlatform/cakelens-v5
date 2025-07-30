@@ -1,6 +1,8 @@
 # cakelens-v5 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/LaunchPlatform/cakelens-v5/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LaunchPlatform/cakelens-v5/tree/master)
 Open-source AI-gen video detection model
 
+Please see the [blog post](https://fangpenlin.com/posts/2025/07/30/open-source-cakelens-v5/) for more details.
+
 ## Installation
 
 Install the package with its dependencies:
