@@ -11,6 +11,7 @@ version = "0.1.2"
 source = { virtual = "." }
 dependencies = [
     { name = "click" },
+    { name = "huggingface-hub" },
 ]
 
 [package.optional-dependencies]
@@ -22,23 +23,20 @@ torch = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "huggingface-hub" },
     { name = "pytest" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.0.0" },
+    { name = "huggingface-hub", specifier = ">=0.33.4" },
     { name = "torch", marker = "extra == 'torch'", specifier = "==2.7.0+cu128", index = "https://download.pytorch.org/whl/cu128" },
     { name = "torchcodec", marker = "extra == 'torch'", specifier = ">=0.4.0" },
     { name = "torchvision", marker = "extra == 'torch'", specifier = "==0.22.0+cu128", index = "https://download.pytorch.org/whl/cu128" },
 ]
 
 [package.metadata.requires-dev]
-dev = [
-    { name = "huggingface-hub", specifier = ">=0.33.4" },
-    { name = "pytest", specifier = ">=8.4.1" },
-]
+dev = [{ name = "pytest", specifier = ">=8.4.1" }]
 
 [[package]]
 name = "certifi"
