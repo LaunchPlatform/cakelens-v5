@@ -2,6 +2,7 @@
 Open-source AI-gen video detection model
 
 Please see the [blog post](https://fangpenlin.com/posts/2025/07/30/open-source-cakelens-v5/) for more details.
+You can find the model weight at our [Huggingface Hub repository](https://huggingface.co/fangpenlin/cakelens-v5).
 
 ## Installation
 
