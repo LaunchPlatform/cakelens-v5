@@ -6,7 +6,7 @@ Open-source AI-gen video detection model
 Install the package with its dependencies:
 
 ```bash
-pip install -e .
+pip install cakelens-v5
 ```
 
 ## Command Line Interface
